@@ -1,0 +1,107 @@
+---
+title: "7.Data Visualisation II"
+author: "Michael Aung Kyaw"
+date: "(`r format(Sys.time(), '%d %B, %Y')`)"
+output: 
+  github_document:
+    toc: TRUE
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message=FALSE, warning=FALSE, dev = "svg")
+```
+This report uses the following R packages:
+```{r packages}
+library(tidyverse)
+library(knitr)
+library(dslabs)
+library(scales)
+library(ggplot2)
+library(dslabs)
+library (magrittr)
+data("divorce_margarine")
+```
+# Dataset - Divorce & Margarine
+![](https://www.pappasmacdonnell.com/wp-content/uploads/2015/01/CausationCorrelation_PappasMacDonnell_BL.png)
+
+## Description of the dataset
+```{r str}
+str(divorce_margarine)
+data(divorce_margarine)
+kable(divorce_margarine)
+
+```
+The dataset divorce_margarine contains **10 observations** from **3 variables** which are...
+
+* **Divorce rate maine** - Numerical variable, describing the divorce per 1000 person in Maine
+* **Margarine consumption per capita** - Numerical variable, describing US per capita consumption of margarine in pounds
+* **Year**- Interval variable, which corresponds to different years from 2000 to 2009
+
+
+## Plot Margarine consumption per capita and divroce rate Maine
+```{r plot}
+with(divorce_margarine, plot(margarine_consumption_per_capita, xlab =" Margarine per capita in US", divorce_rate_maine, ylab= "Divorce rate in Maine"))
+title(main = "Margarine per capita vs. Divorce in Maine")
+```
+
+
+## Hypothesis about the data
+
+* H1: Margarine consumption per capita in the US is linked with divorce rate in the Maine
+
+* H0: Margarine consumption per capita in the US is not linked divorce rate in the Maine
+
+
+## Statistical test on the data
+We want to see if there is a **relationship between Margarine consmption per capita in the US and the divorce rate in the Maine for the year 2000**
+
+We may thus want to do a t test 
+
+## Assumptions for the test
+
+We now have to compare europe to asia
+Since we are going to compare 2 groups, we could do a t-test (or a simple anova)
+
+When conducting a t test, different assumptions need to be checked
+
+* 1. **Independence**: The observations in one sample are independent of the observations in the other sample. --> We are going to assume that observations are all independant
+
+* 2. **Normality**: Both samples are approximately normally distributed. --> We will check for normality
+
+* 3. **Homogeneity of Variances**: Both samples have approximately the same variance. --> We will have to test for Normality
+
+* 4. **Random Sampling**: Both samples were obtained using a random sampling method --> We will assume that data came from a random smampling method
+
+We thus have to check for 2, normality and 3, homogenity of variance since we will assume that data comes from independant observations and that random sampling has been made
+
+Source: *https://www.statology.org/t-test-assumptions/*
+
+
+### Shapiro Wilk Normality check
+```{r  normality}
+shapiro.test(divorce_margarine$divorce_rate_maine)
+shapiro.test(divorce_margarine$margarine_consumption_per_capita)
+
+```
+
+We got non significant results of the Shapiro-Wilk normality test which shows us that our data is normally distributed, we may thus continue
+
+
+## T test
+
+```{r t.test}
+t.test(divorce_margarine)
+```
+
+## Interpretation of the results
+
+* We have a p-value of which is smaller than .005, so we can **reject the null hypothesis**
+
+* We could thus **suppose from these results that Margarine consumption per capita in the US is linked with divorce rate in the *Maine**
+* But we may maybe want to be **precautious** with these results since lots of explications using data that we do not have could show us that other factors may explain the "correlation" that we have found here. This is why we think and test **counfounding variables!**
+
+
+## Source 
+**https://search.r-project.org/CRAN/refmans/dslabs/html/divorce_margarine.html**
+
+**https://www.pappasmacdonnell.com/wp-content/uploads/2015/01/CausationCorrelation_PappasMacDonnell_BL.png**

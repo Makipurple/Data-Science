@@ -1,0 +1,109 @@
+---
+title: "4.Data Wrangling"
+author: "Michael Aung Kyaw"
+date: "(`r format(Sys.time(), '%d %B, %Y')`)"
+output: github_document
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Dataset **Murder** from Rdocumentation
+
+
+```{r murders}
+library('dslabs')
+data(murders)
+library(dplyr)
+library(knitr)
+print(murders)
+```
+
+##Description of the dataset
+We have here a dataset describing **Gun murder data* from *FBI* reports. Also contains the *population* of each *state*.
+
+* **State**: US state
+* **Abb**: Abbreviation of US state
+* **Region**: Geographical US region
+* **Population**: State population (2010)
+* **Total**: Number of gun murders in state (2010)
+
+## Filter by **Population >= 150000** & **Region: South & West**
+
+```{r filter}
+murderpopreg <- murders %>%
+  filter(region %in% c("West","South"), population >= 1500000)
+  print(murderpopreg)
+  head(murderpopreg)
+  tail(murderpopreg) 
+```
+We have filtered the data from two variables
+*Population* selecting states with equal/more than 150000 person
+*Region* selecting south and west
+
+## Select Murders from state (>=150000) & Region(South & West)
+```{r selected}
+murdpopselected <- murderpopreg %>%
+    select(state, population, total)
+  print(murdpopselected)
+  head(murdpopselected)
+  tail(murdpopselected)
+  str(murdpopselected)
+```
+
+## Arrange from total of Murders for >=150000 in South West 
+```{r arrange}
+murdpopselected <-murdpopselected %>%
+  arrange(desc(total))
+  print(murdpopselected)
+```
+
+## Observation from the arranged data
+We can see that the states with the most murders are seemingly the biggest ones(with the most population) which does not seem very surprising as with more people we can consider more probability any event happening
+
+## Summary
+```{r summarize}
+summary <- murderpopreg %>%
+  group_by(region)%>%
+  summarize(average_total=mean(total,na.rm=TRUE), sd_total=sd(total, na.rm =TRUE)) %>%
+arrange(average_total)
+print(summary)
+```
+
+Since population is not a factor we can not summarize data on it
+So we have here the organization of our data from region
+
+We can see that on average there is more murders in the south than the west
+
+## Filter out NA 
+```
+{r NA}
+murderna <- na.omit(murders)
+str(murders)
+```
+
+We find the same amount of observations as in the original dataset when removing NA's.
+We could thus infer that the dataset murders does *not contain any NA's*
+
+## Reuniting Results Election of 2016 with Murders
+```{r Reunited}
+full_join(results_us_election_2016, murders)
+```
+We could look at the states that voted either liberal or democrat at the 2010 elections and see if these states have higher murder rates
+But since our dataset of murders is for the year 2010 and the elections results from 2016 we may want to look at data from the same year
+This is a mistake that I have made that I realized by maipulating the data
+The lesson is, **always check where the data comes from** and look **if our question is being answered correctly**
+
+## Picture of gun-related deaths in US
+![](https://upload.wikimedia.org/wikipedia/commons/6/6b/1999-_Gun-related_deaths_USA.png)
+
+## Sources
+* Data from *dslabs*also available on *https://www.rdocumentation.org/packages/dslabs/versions/0.7.4/topics/murders*
+
+* *https://upload.wikimedia.org/wikipedia/commons/6/6b/1999-_Gun-related_deaths_USA.png*
+
+* *https://www.statista.com/statistics/249775/percentage-of-population-in-the-us-owning-a-gun-by-party-affiliation/*
+
+

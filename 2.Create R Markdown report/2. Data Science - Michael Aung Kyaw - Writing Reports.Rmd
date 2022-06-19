@@ -1,0 +1,59 @@
+---
+title: "2.Writing scientific reports"
+author: "Michael Aung Kyaw"
+date: "(`r format(Sys.time(), '%d %B, %Y')`)"
+output: 
+  github_document
+---
+
+# Vervet Monkeys
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Social life and living
+The vervet monkey *Chlorocebus pygerythrus*, or simply vervet, is an **Old World monkey** of the family **Cercopithecidae** native to Africa. The term "vervet" is also used to refer to all the members of the genus **Chlorocebus**. The five distinct subspecies can be found mostly throughout Southern Africa, as well as some of the eastern countries. Vervets were introduced to Florida, St. Kitts and Nevis, Barbados, and Cape Verde
+
+## Scientific classification
+
+* Kingdom:    	**Animalia**
+* Phylum:	      **Chordata**
+* Class:        **Mammalia**
+* Order:        **Primates**
+* Suborder:     **Haplorhini**
+* Infraorder:   **Simiiformes**
+* Family:       **Cercopithecidae**
+* Genus:        **Chlorocebus**
+* Species:      **C. pygerythrus**
+
+## Types of Alarm calls
+Vervet monkeys are known for their specialised alarm calls that differ
+depending on the *predator* that has been detected. Because I find this interesting and because I wanted to show a numbered list here is an example
+
+1. Alarm for *leopards*
+2. Alarm for *pythons*
+3. Alarm for *eagles*
+  
+
+## Adult Vervet Monkey
+![](https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/Black_faced_vervet_monkey.jpg/440px-Black_faced_vervet_monkey.jpg)
+## Habitat of vervet monkeys
+
+ *"The vervet monkey ranges throughout much of Southern and East Africa, being found from Ethiopia, Somalia and extreme southern South Sudan, to South Africa. It is not found west of the East African Rift or the Luangwa River, where it is replaced by the closely related malbrouck *(C. cynosuros)*. The vervet monkey inhabits savanna, riverine woodland, coastal forest, and mountains up to 4000 m (13,100 ft)."*
+
+![](https://upload.wikimedia.org/wikipedia/commons/c/cc/Vervet_Monkey_area.png)
+
+## Data set on Beavers instead of Vervet Monkeys
+Because I did not find (at this point) any data sets on vervet monkeys, I allowed myself to use the **beaver data set**. I hope this will not be problematic.
+
+```{r beaver2}
+  library(knitr)
+  kable(beaver2)
+```
+
+
+## References
+*T.Chapman*, *Colin A*. et *al*. (2017), Data from: *Social behaviours and networks of vervet monkeys are influenced by gastrointestinal parasites, Dryad, Dataset*
+
+*Wikimedia Foundation. (2022, March 15). Vervet Monkey. Wikipedia. Retrieved June 19, 2022, from https://en.wikipedia.org/wiki/Vervet_monkey*

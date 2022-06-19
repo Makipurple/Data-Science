@@ -1,0 +1,136 @@
+---
+title: "3.Importing Data"
+author: "Michael Aung Kyaw"
+date: "(`r format(Sys.time(), '%d %B, %Y')`)"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+# Dataset1 - Beaver 2
+
+We load the dataset beaver 2 : data`beaver2`:
+
+While there is actually two datasets of beaver, I chose to use beaver2, since I used it in the 2nd markdown and though that it would be interesting to investigate it in more details.
+
+
+## Description of Beaver2 
+```{r beaver2}
+library(knitr)
+kable(head(beaver2))
+str(beaver2)
+```
+We have shown the table of results showing only the "head" of the table that is containing the first 6 entries of the dataset. Since we saw in the previous markdown that the table was very long, I don't think it is necessary to show it entirely
+
+So in our dataset we have...
+
+* **4 variables** composed of *100 observations*.
+The variables are: **day**, **time**, **temperature** and **activity**. 
+* It seems that each of these four variables are *numerical*.
+* These measure would then all quantitative
+
+## Descrption of Beaver2 dataset from Source
+
+* "**Reynolds (1994)** describes a small part of a study of the long-term temperature dynamics of beaver **Castor canadensis** in north-central Wisconsin. Body temperature was measured by telemetry every 10 minutes for four females, but data from a one period of less than a day for each of two animals is used there."
+
+* **Day** :Day of observation (in days since the beginning of 1990), December 12–13 (beaver1) and November 3–4 (beaver2). - *Numerical variable*
+* **Time**: Time of observation, in the form 0330 for 3:30am - *Numerical variable*
+* **Temp**: Measured body temperature in degrees Celsius. - *Numerical variable*
+* **Activity**: Indicator of activity outside the retreat. - *Numerical variable*
+
+## Picture of *Castor canadensis*
+![](https://fr-academic.com/pictures/frwiki/67/Castor_canadensis.jpg)
+
+## Source of Beaver2 dataset
+* **P. S. Reynolds (1994) Time-series analyses of beaver body temperatures. Chapter 11 of Lange, N., Ryan, L., Billard, L., Brillinger, D., Conquest, L. and Greenhouse, J. eds (1994) Case Studies in Biometry. New York: John Wiley and Sons.**
+
+* **R: Body temperature series of two Beavers. (n.d.). Retrieved June 19, 2022, from https://stat.ethz.ch/R-manual/R-devel/library/datasets/html/beavers.html**
+
+* **https://fr-academic.com/pictures/frwiki/67/Castor_canadensis.jpg**
+
+
+
+
+# Dataset 2 - Causes of Death in France
+
+* The second dataset is a data set different types of causes of death in France
+
+
+```{r CausesOfDeathFrance}
+library(readr)
+CausesOfDeathFrance <- read_csv("CausesOfDeathFrance.csv")
+View(CausesOfDeathFrance)
+kable(head(CausesOfDeathFrance))
+str(CausesOfDeathFrance)
+```
+
+## Despcrition of Death Causes in France dataset eurostat
+
+The dataset CausesOfDeathFrance in composed of *8 variables*
+
+* **Time** : quantitaive variable
+* **Geo** : qualitative variable
+* **Unit**: qualitative variable
+* **Sex**: qualitative variable
+* **Age**: qualitative variable
+* **ICD10**: qualitative variable
+* **Value**: qualitative variable
+* **Flag and Footnotes** :qualitative variable
+ 
+* We have a total of *1056 observations*
+
+## Description of hapiness dataset from the source
+* **Data on causes of death (COD)** provide information on ***mortality patterns** and form a major element of **public health information**.
+
+* The COD data refer to the underlying cause which - according to the **World Health Organisation (WHO)** - is "the disease or injury which initiated the train of morbid events leading directly to death, or the circumstances of the accident or violence which produced the fatal injury".
+
+* Data published in **Eurobase* are broken down by ***sex***,*** 5-year age groups***, ***cause of death*** and by ***residency*** and ***country of occurrence**. For stillbirths and neonatal deaths, additional breakdowns might include age of mother and parity
+
+## Picture of France with capitals in Europe
+![](https://cdn.britannica.com/42/183642-050-C7D21FE8/World-Data-Locator-Map-France.jpg)
+
+## Source of CausesOfDeathFrance dataset
+* The data set comes from the website *EuroStat* 
+* URL : **http://appsso.eurostat.ec.europa.eu/nui/show.do?dataset=hlth_cd_anr&lang=en**
+* PICTURE : **https://cdn.britannica.com/42/183642-050-C7D21FE8/World-Data-Locator-Map-France.jpg**
+
+
+
+
+
+# Dataset 3 - Happiness
+
+## Description of happiness dataset
+
+* European quality of life survey with questions related to income, life satisfaction or perceived quality of society.
+* Provides the average rating for the question How happy would you say you are these days? Rating 1 (low) to 10 (high) by country and by sex.
+
+
+```{r happiness}
+library(readr)
+happiness <- read_csv("happiness.csv")
+View(happiness)
+kable(head(happiness))
+str(happiness)
+spec(happiness)
+```
+## Source of the Film datase
+
+## Despcrition of Hapiness dataset variables
+
+* In the happiness dataset R recognizes 4 variables for 105 observations
+* In reality we have 2 variables
+
+## Variables of Hapiness dataset
+* Gender : Qualitative numerical variable
+* Country: Qualitative nominal variable
+
+
+## Small comic in link with hapiness
+![](https://images.squarespace-cdn.com/content/v1/5bc04bb5b10f257212a8dca7/1567120904020-73X04QNHQJ72C0X22I25/feat_800px.jpg?format=1000w)
+
+## Source of the Hapiness dataset
+* **https://perso.telecom-paristech.fr/eagan/class/igr204/datasets**
+* Picture by *zen pencils* found on **https://images.squarespace-cdn.com/content/v1/5bc04bb5b10f257212a8dca7/1567120904020-73X04QNHQJ72C0X22I25/feat_800px.jpg?format=1000w**
+

@@ -1,0 +1,110 @@
+REPOSITORY 6
+
+---
+title: "Data Visualisation II"
+author: "Michael Aung Kyaw"
+date: "(`r format(Sys.time(), '%d %B, %Y')`)"
+output: 
+  github_document:
+    toc: TRUE
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message=FALSE, warning=FALSE, dev = "svg")
+```
+This report uses the following R packages:
+```{r packages}
+library(tidyverse)
+library(knitr)
+library(dslabs)
+library(scales)
+library(ggplot2)
+library(dslabs)
+library (magrittr)
+data("gapminder")
+```
+# Dataset - Gapminder
+
+## Description of the dataset
+```{r str}
+str(gapminder)
+```
+The dataset gampinder contains **10454 observations** from **9 variables** which are
+
+**Country** - Factor variable,
+**Year** - Integer variable,
+**Infant_mortality**- Numerical variable,
+**Life_expectancy**- Numerical variable,
+**Fertility**- Numerical variable,
+**Population** - Numerical variable,
+**Continent** - Factor variable,
+**Region** - Factor variable,
+
+## Question to answer
+I would like to first the data for the year 1969 in europe and asia to see **where does the fertility rate is the higher**
+Then, i would like to look where is life expectancy the highest during the year 1969 between europe and asia and if possible link it with fertility rate
+
+## Plot Continent & Year
+
+### Filter by **Continent** & **Year 1969**
+
+We are going to filter the data for the *year 1969* in *Europe and Asia*
+Also he will have the first and six last countries that will be presented
+
+```{r filter}
+EA69 <- gapminder %>%
+  filter(continent %in% c("Europe","Asia"), year==1969)
+  kable(head(EA69 ))
+  kable(tail(EA69))
+  (str(EA69))
+ 
+ 
+```
+### Plot **Continent** & **Year 1969**
+
+We are now plotting our data filtered for Europe and Asia in 1969
+
+```{r plot1}
+ggplot(EA69 , aes(reorder(region, fertility, na.rm = T, FUN = median), fertility, fill=continent)) +
+  geom_boxplot(outlier.alpha = 0.3, outlier.size = 1) +
+  scale_y_continuous(limits = c(1,8),
+                     breaks = seq(1,8,1)) +
+  labs(x = "Continent - Europ & Asia",
+       y = "Fertility (average number of children per woman)",
+       fill = "Continent",
+       title = "Fertility in Europe & Asia for the year 1969.",
+       caption = "Source: Gapminder") +
+  coord_flip() +
+  theme_classic() +
+  theme(
+    axis.title.y = element_text(angle = 0, vjust = 0.5)
+  )
+```
+
+### Interpretation of the plot Continent and Year 1969
+It seems form our boxplots that **Asia** has a much **higher fertility** rate than europe for the **year 1969**
+
+In europe, *eastern europe* seems to have the lowest fertility where *southern europe* have the highest
+
+In asia, *eastern asia* seems to have the lowest fertility rate, even if there is a lot of variability, while *western asia* has the highest fertility rate
+
+## Plot Life Expectancy & Fertility per Continent
+
+ 
+```{r plot2}
+ ggplot(data = EA69) +
+geom_boxplot(mapping = aes(x = fertility, y = life_expectancy, color = continent, size = population)) + scale_x_log10()
+```
+
+
+### Interpretation of **Life Expectancy** & **Fertility** per Continent
+With this new boxplot we can see that europe which has a lower fertility rate has higher life expectancy than asia which has a higher fertility rate
+We may thus suppose that more fertility could lead to more individuals being born and maybe more death in young years? This may invovle further analysis and statisticla tests, as for the precedent plot
+
+Anyways **we can find interesting observation by plotting the data** which I found very rewarding when we understand how to visualize it
+
+
+
+## Source of the dataset Gampminder
+**Irizarry, Rafael A., and Amy Gill. 2021. Dslabs: Data Science Labs. https://CRAN.R-project.org/package=dslabs.**
+

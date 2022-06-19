@@ -1,0 +1,160 @@
+---
+title: "Linear Models"
+author: "Michael Aung Kyaw"
+date: "(`r format(Sys.time(), '%d %B, %Y')`)"
+output: 
+  github_document:
+    toc: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, dev = "svg")
+```
+This report uses the following R packages:
+```{r packages, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(knitr)
+library(dslabs)
+data ("cars")
+```
+# Dataset Cars
+
+## Description of the dataset 
+We will be using the `car` dataset from the `dslabs` package. 
+
+The data give the speed of cars and the distances taken to stop. The data were recorded in the 1920s.
+
+Let's take a look at the data types:
+```{r str}
+str(cars)
+kable(head(cars))
+```
+We can see that there are 50 observations for 2 variables
+
+* **Speed**, which is a numerical variable, with measures of **cars speed** in **mph** 
+
+* **Dist**, which is also a numerical variable, containing measures of **stopping distance**, in **feets**
+
+## Variable types
+* Simple physics lets us know that **distance** is a product of **time x speed**, we can thus understand that distance is dependent of in our case, the speed
+
+* We will consider, even if no experimental manipulations were made, that *speed* is the *explanatory variable* and that *distance* is our *response variable* 
+
+
+![](https://examsbook.co.in/img/post/large/rxmETime-Speed-and-Distance-Formula.webp)
+
+## ScatterPlot Stopping distance per Speed
+
+```{r  plot}
+plot(cars, xlab = "Speed (mph)", ylab = "Stopping distance (ft)")
+lines(lowess(cars$speed, cars$dist, f = 2/3, iter = 3), col = "red")
+title(main = "Stopping Distance per Speed")
+
+```
+
+## Correlation?
+
+We want to know if there is a correlation between speed and stopping distance. We will , for that, do a Pearsons correlation
+
+### Pearsons correlation coefficient
+* This coefficient is used to look is there is a *statistical relationship* between two continuous variables, it will help us understand the ***magnitude** and the **direction** of the relationship between our variables
+
+* This correlation *"assigns a value between − 1 and 1, where..*
+   * *0 is no correlation* 
+   * *1 is total positive correlation*
+   * *− 1 is total negative correlation*"
+
+* Example: *"This is interpreted as follows: a correlation value of 0.7 between two variables would indicate that a significant and positive relationship exists between the two. A positive correlation signifies that if variable A goes up, then B will also go up, whereas if the value of the correlation is negative, then if A increases, B decreases".*
+
+## Pearsons Correlation
+```{r pearson}
+correlation <- cor(cars$dist, cars$speed, method = 'pearson')
+print(correlation)
+``` 
+We have obtained a correlation of approximately **0.807**, which indicate a strong **positive relationship** between *speed* and *time*
+
+## Representation of the relationship between Speed and Distance
+```{r plot2}
+library(ggplot2)
+gg <- ggplot(cars, aes(speed,dist))
+gg <- gg + geom_point()
+gg <- gg + geom_smooth(alpha=0.3, method="lm")
+print(gg)
+```
+We may now see how the speed seems strongly correlated with distance even if as we can see there seem to be some outliers
+
+## Correlation vs causation
+* "**Correlation** is a statistical association between variables", it is a "statistical indicator, but even if some variables covary, this may not be due to a direct causal link."
+
+* **Causation** means that a change in one variable causes a change in another variable.", and that "there is a cause-and-effect relationship between the variables."
+
+* *"A correlation doesn't imply causation, but causation always implies correlation"*
+
+We may thus infer from pearsons correlation that there is a link between the two variables. But this may not mean that there is a cause-and-effect relationship. We have seen from the formula previously presented that **speed** has a causal effect on **distance**, and that it is also influenced by **time**
+
+Thus we know that there is indeed causality from speed to distance 
+
+Nevertheless we will try to fit our model in a **linear model** 
+
+## ""General" Linear Model 
+We are now going to do a general linear models which is *"a statistical method to relate some number of continuous and/or categorical predictors to a single outcome variable"*
+
+### GLM -Assumptions
+1. **Independence of observations **, which we will assume is present 
+2. **Normality**, which we will check by looking if the data follows a *normal distribution*
+3. **Linearity** which we will check by making a graph to see if there seem to be a linear relationship between the variables
+4.**Homoscedasticity**, which we wil test after fitting our linear model
+
+
+As *simple linear regressions* are made to test the influence of a continuous variable from the explanatory, we may want to do one
+
+###  Normality
+```{r normality}
+hist((cars$dist), main="Cars distance",
+     xlab ="distance")
+hist((cars$speed), main="Cars speed",
+      xlab = "speed")
+```
+
+We will assume that data is approximately normally distributed for speed, and that we may accept the distribution for distance since we results seem to have a normal distribution around 20-40
+We may want to do further analysis but for the exercise I will allow my self to continue with this
+
+### Linearity
+We will rely on a scatterplot (again) to see the relationship between our variables
+```{r linearity}
+ plot(speed ~ dist, data = cars)
+normality <- ggplot(cars, aes(speed,dist))
+normality <- normality + geom_point()
+normality <- normality + geom_smooth(alpha=0.3, method="lm")
+print(normality)
+```
+We still see here that we have some outliers at 120mph but if we took this subject out we may have a really nice line that could go in our data
+By putting our data on our logarithmic scale (as done before) we see that the data seem to be linar
+
+
+## Simple regression
+```{r regression}
+speed.dist.lm <- lm(speed ~ dist, data = cars)
+summary(speed.dist.lm)
+```
+We have here our informations which are...
+* the **estimate** which is the value of the **y-intercept** of **8.28** and the estimated effect of **speed on distance** of **0.16**, the **standard error**,the **t value** and **p-value** of **1.49e-12** which is a very small number indicating that our *model fits well the data*
+
+We will conclude that there is a *significant positive relationship* between **speed and distance**
+
+## How speed affects breaking distance
+![](https://xgrit-ecom.imgix.net/ace/Braking-distance.png)
+
+# Source
+* **Ezekiel, M. (1930) Methods of Correlation Analysis. Wiley**
+
+* **Nettleton, D. (2014). Selection of Variables and Factor Derivation. Commercial Data Mining, 79-104.** on *https://www.sciencedirect.com/topics/computer-science/pearson-correlation*
+
+* **https://www.scribbr.com/methodology/explanatory-and-response-variables/**
+
+* **https://online.stat.psu.edu/stat504/lesson/6/6.1**
+
+## Picture
+* **https://examsbook.co.in/img/post/large/rxmETime-Speed-and-Distance-Formula.webp**
+
+* **https://xgrit-ecom.imgix.net/ace/Braking-distance.png**

@@ -1,0 +1,70 @@
+---
+title: "5. Wrangle some more"
+author: "Michael Aung Kyaw"
+date: "(`r format(Sys.time(), '%d %B, %Y')`)"
+output: github_document
+---
+# More data wrangling
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r packages, message=FALSE, warning=FALSE}
+library(tidyr)
+library(rlang)
+library(knitr)
+library(dslabs)
+library(dplyr)
+library(magrittr)
+library(ggplot2)
+```
+
+## Dataset - Gapminder
+As in the example given we will use the data set *gapminder*
+
+## Description of the dataset
+```{r str}
+str(gapminder)
+```
+The dataset gampinder contains **10454 observations** from **9 variables** which are
+
+* **Country** - Factor variable,
+* **Year** - Integer variable,
+* **Infant_mortality**- Numerical variable,
+* **Life_expectancy**- Numerical variable,
+* **Fertility**- Numerical variable,
+* **Population** - Numerical variable,
+* **Continent** - Factor variable,
+* **Region** - Factor variable,
+
+## Transforming data from long to wide format
+
+```{r long}
+longgapminder <- gapminder %>%
+  pivot_longer(c("life_expectancy", "fertility", ), names_to = "variable")
+longgapminder %>% head() %>% kable()
+```
+## Manipulation fo data
+```{r unite}
+longgapminder <- longgapminder %>% 
+  unite(cont_region, continent, region)
+longgapminder %>% head() %>% kable()
+```
+
+## Transforming data from wide to long format
+```{r wide}
+longgapminder <- longgapminder %>% 
+  separate(cont_region, into=c("continent", "region"), sep="_")
+longgapminder %>% head() %>% kable()
+```
+
+## Plot 
+Finally, using our original `gapminder` dataset, let's plot infant mortality against life expectancy:
+```{r plot, warning=FALSE}
+ggplot(gapminder, aes(infant_mortality, continent)) +
+  geom_point()
+```
+
+## Source of the dataset Gampminder
+**Irizarry, Rafael A., and Amy Gill. 2021. Dslabs: Data Science Labs. https://CRAN.R-project.org/package=dslabs.**
