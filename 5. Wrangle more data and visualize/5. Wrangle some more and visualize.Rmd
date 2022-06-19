@@ -65,6 +65,10 @@ Finally, using our original `gapminder` dataset, let's plot infant mortality aga
 ggplot(gapminder, aes(infant_mortality, continent)) +
   geom_point()
 ```
+## Picture of world density by population
+![](https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Living_population_density.png/800px-Living_population_density.png)
 
-## Source of the dataset Gampminder
+## Source 
 **Irizarry, Rafael A., and Amy Gill. 2021. Dslabs: Data Science Labs. https://CRAN.R-project.org/package=dslabs.**
+**https://www.duhoctrungquoc.vn/wiki/en/Population_density**
+
